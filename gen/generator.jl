@@ -5,6 +5,7 @@ using SDL2_mixer_jll
 using SDL2_image_jll
 using SDL2_ttf_jll
 using SDL2_gfx_jll
+using SDL2_net_jll
 
 cd(@__DIR__)
 
@@ -18,6 +19,7 @@ sdl_framerate_h = joinpath(sdl_gfx_include_dir, "SDL2", "SDL2_framerate.h")
 sdl_gfxPrimitives_h = joinpath(sdl_gfx_include_dir, "SDL2", "SDL2_gfxPrimitives.h")
 sdl_imageFilter_h = joinpath(sdl_gfx_include_dir, "SDL2", "SDL2_imageFilter.h")
 sdl_rotozoom_h = joinpath(sdl_gfx_include_dir, "SDL2", "SDL2_rotozoom.h")
+sdl_net_h = joinpath(SDL2_net_jll.artifact_dir, "include", "SDL2", "SDL_net.h")
 
 local_include_dir = joinpath(@__DIR__, "include")
 isdir(local_include_dir) && rm(local_include_dir, recursive=true)
@@ -29,6 +31,7 @@ cp(sdl_framerate_h, joinpath(@__DIR__, "include", "SDL2", basename(sdl_framerate
 cp(sdl_gfxPrimitives_h, joinpath(@__DIR__, "include", "SDL2", basename(sdl_gfxPrimitives_h)))
 cp(sdl_imageFilter_h, joinpath(@__DIR__, "include", "SDL2", basename(sdl_imageFilter_h)))
 cp(sdl_rotozoom_h, joinpath(@__DIR__, "include", "SDL2", basename(sdl_rotozoom_h)))
+cp(sdl_net_h, joinpath(@__DIR__, "include", "SDL2", basename(sdl_net_h)))
 
 sdl_mixer_h = joinpath(local_include_dir, "SDL2", "SDL_mixer.h")
 sdl_image_h = joinpath(local_include_dir, "SDL2", "SDL_image.h")
@@ -38,6 +41,7 @@ sdl_framerate_h = joinpath(local_include_dir, "SDL2", "SDL2_framerate.h")
 sdl_gfxPrimitives_h = joinpath(local_include_dir, "SDL2", "SDL2_gfxPrimitives.h")
 sdl_imageFilter_h = joinpath(local_include_dir, "SDL2", "SDL2_imageFilter.h")
 sdl_rotozoom_h = joinpath(local_include_dir, "SDL2", "SDL2_rotozoom.h")
+sdl_net_h = joinpath(local_include_dir, "SDL2", "SDL_net.h")
 
 
 options = load_options(joinpath(@__DIR__, "generator.toml"))
@@ -45,6 +49,6 @@ options = load_options(joinpath(@__DIR__, "generator.toml"))
 args = get_default_args()
 push!(args, "-I$local_include_dir")
 
-ctx = create_context([sdl_h, sdl_mixer_h, sdl_image_h, sdl_ttf_h, sdl_framerate_h, sdl_gfxPrimitives_h, sdl_imageFilter_h, sdl_rotozoom_h], args, options)
+ctx = create_context([sdl_h, sdl_mixer_h, sdl_image_h, sdl_ttf_h, sdl_framerate_h, sdl_gfxPrimitives_h, sdl_imageFilter_h, sdl_rotozoom_h, sdl_net_h], args, options)
 
 build!(ctx)

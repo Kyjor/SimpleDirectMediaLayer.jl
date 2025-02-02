@@ -15,7 +15,12 @@ export SDL2_ttf_jll
 using SDL2_gfx_jll
 export SDL2_gfx_jll
 
+using SDL2_net_jll
+export SDL2_net_jll
+
 using CEnum
+
+println("SDL2_jll version: ")
 
 const SDL_MIN_SINT8 = reinterpret(Int8, ~0x7F)
 const SDL_MIN_SINT16 = reinterpret(Int16, ~0x7FFF)
@@ -131,25 +136,25 @@ function SDL_UnlockMutex(mutex)
     ccall((:SDL_UnlockMutex, libsdl2), Cint, (Ptr{SDL_mutex},), mutex)
 end
 
-struct __JL_Ctag_559
+struct __JL_Ctag_648
     data::NTuple{24, UInt8}
 end
 
-function Base.getproperty(x::Ptr{__JL_Ctag_559}, f::Symbol)
-    f === :stdio && return Ptr{__JL_Ctag_560}(x + 0)
-    f === :mem && return Ptr{__JL_Ctag_561}(x + 0)
-    f === :unknown && return Ptr{__JL_Ctag_562}(x + 0)
+function Base.getproperty(x::Ptr{__JL_Ctag_648}, f::Symbol)
+    f === :stdio && return Ptr{__JL_Ctag_649}(x + 0)
+    f === :mem && return Ptr{__JL_Ctag_650}(x + 0)
+    f === :unknown && return Ptr{__JL_Ctag_651}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_559, f::Symbol)
-    r = Ref{__JL_Ctag_559}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_559}, r)
+function Base.getproperty(x::__JL_Ctag_648, f::Symbol)
+    r = Ref{__JL_Ctag_648}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_648}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_559}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_648}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -164,7 +169,7 @@ function Base.getproperty(x::Ptr{SDL_RWops}, f::Symbol)
     f === :write && return Ptr{Ptr{Cvoid}}(x + 24)
     f === :close && return Ptr{Ptr{Cvoid}}(x + 32)
     f === :type && return Ptr{Uint32}(x + 40)
-    f === :hidden && return Ptr{__JL_Ctag_559}(x + 48)
+    f === :hidden && return Ptr{__JL_Ctag_648}(x + 48)
     return getfield(x, f)
 end
 
@@ -3530,25 +3535,25 @@ end
     SDL_CONTROLLER_BINDTYPE_HAT = 3
 end
 
-struct __JL_Ctag_563
+struct __JL_Ctag_652
     data::NTuple{8, UInt8}
 end
 
-function Base.getproperty(x::Ptr{__JL_Ctag_563}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_652}, f::Symbol)
     f === :button && return Ptr{Cint}(x + 0)
     f === :axis && return Ptr{Cint}(x + 0)
-    f === :hat && return Ptr{__JL_Ctag_564}(x + 0)
+    f === :hat && return Ptr{__JL_Ctag_653}(x + 0)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_563, f::Symbol)
-    r = Ref{__JL_Ctag_563}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_563}, r)
+function Base.getproperty(x::__JL_Ctag_652, f::Symbol)
+    r = Ref{__JL_Ctag_652}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_652}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_563}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_652}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -3558,7 +3563,7 @@ end
 
 function Base.getproperty(x::Ptr{SDL_GameControllerButtonBind}, f::Symbol)
     f === :bindType && return Ptr{SDL_GameControllerBindType}(x + 0)
-    f === :value && return Ptr{__JL_Ctag_563}(x + 4)
+    f === :value && return Ptr{__JL_Ctag_652}(x + 4)
     return getfield(x, f)
 end
 
@@ -6673,92 +6678,294 @@ function rotateSurface90Degrees(src, numClockwiseTurns)
     ccall((:rotateSurface90Degrees, libsdl2_gfx), Ptr{SDL_Surface}, (Ptr{SDL_Surface}, Cint), src, numClockwiseTurns)
 end
 
-struct __JL_Ctag_560
+struct _SDLNet_GenericSocket
+    ready::Cint
+end
+
+const SDLNet_GenericSocket = Ptr{_SDLNet_GenericSocket}
+
+function _SDLNet_SocketReady(sock)
+    ccall((:_SDLNet_SocketReady, libSDL2_net), Cint, (SDLNet_GenericSocket,), sock)
+end
+
+function _SDLNet_Write16(value, areap)
+    ccall((:_SDLNet_Write16, libSDL2_net), Cvoid, (Uint16, Ptr{Cvoid}), value, areap)
+end
+
+function _SDLNet_Write32(value, areap)
+    ccall((:_SDLNet_Write32, libSDL2_net), Cvoid, (Uint32, Ptr{Cvoid}), value, areap)
+end
+
+function _SDLNet_Read16(areap)
+    ccall((:_SDLNet_Read16, libSDL2_net), Uint16, (Ptr{Cvoid},), areap)
+end
+
+function _SDLNet_Read32(areap)
+    ccall((:_SDLNet_Read32, libSDL2_net), Uint32, (Ptr{Cvoid},), areap)
+end
+
+const SDLNet_version = SDL_version
+
+function SDLNet_Linked_Version()
+    ccall((:SDLNet_Linked_Version, libSDL2_net), Ptr{SDLNet_version}, ())
+end
+
+function SDLNet_Init()
+    ccall((:SDLNet_Init, libSDL2_net), Cint, ())
+end
+
+function SDLNet_Quit()
+    ccall((:SDLNet_Quit, libSDL2_net), Cvoid, ())
+end
+
+struct IPaddress
+    host::Uint32
+    port::Uint16
+end
+
+function SDLNet_ResolveHost(address, host, port)
+    ccall((:SDLNet_ResolveHost, libSDL2_net), Cint, (Ptr{IPaddress}, Ptr{Cchar}, Uint16), address, host, port)
+end
+
+function SDLNet_ResolveIP(ip)
+    ccall((:SDLNet_ResolveIP, libSDL2_net), Ptr{Cchar}, (Ptr{IPaddress},), ip)
+end
+
+function SDLNet_GetLocalAddresses(addresses, maxcount)
+    ccall((:SDLNet_GetLocalAddresses, libSDL2_net), Cint, (Ptr{IPaddress}, Cint), addresses, maxcount)
+end
+
+mutable struct _TCPsocket end
+
+const TCPsocket = Ptr{_TCPsocket}
+
+function SDLNet_TCP_Open(ip)
+    ccall((:SDLNet_TCP_Open, libSDL2_net), TCPsocket, (Ptr{IPaddress},), ip)
+end
+
+function SDLNet_TCP_Accept(server)
+    ccall((:SDLNet_TCP_Accept, libSDL2_net), TCPsocket, (TCPsocket,), server)
+end
+
+function SDLNet_TCP_GetPeerAddress(sock)
+    ccall((:SDLNet_TCP_GetPeerAddress, libSDL2_net), Ptr{IPaddress}, (TCPsocket,), sock)
+end
+
+function SDLNet_TCP_Send(sock, data, len)
+    ccall((:SDLNet_TCP_Send, libSDL2_net), Cint, (TCPsocket, Ptr{Cvoid}, Cint), sock, data, len)
+end
+
+function SDLNet_TCP_Recv(sock, data, maxlen)
+    ccall((:SDLNet_TCP_Recv, libSDL2_net), Cint, (TCPsocket, Ptr{Cvoid}, Cint), sock, data, maxlen)
+end
+
+function SDLNet_TCP_Close(sock)
+    ccall((:SDLNet_TCP_Close, libSDL2_net), Cvoid, (TCPsocket,), sock)
+end
+
+mutable struct _UDPsocket end
+
+const UDPsocket = Ptr{_UDPsocket}
+
+struct UDPpacket
+    channel::Cint
+    data::Ptr{Uint8}
+    len::Cint
+    maxlen::Cint
+    status::Cint
+    address::IPaddress
+end
+
+function SDLNet_AllocPacket(size)
+    ccall((:SDLNet_AllocPacket, libSDL2_net), Ptr{UDPpacket}, (Cint,), size)
+end
+
+function SDLNet_ResizePacket(packet, newsize)
+    ccall((:SDLNet_ResizePacket, libSDL2_net), Cint, (Ptr{UDPpacket}, Cint), packet, newsize)
+end
+
+function SDLNet_FreePacket(packet)
+    ccall((:SDLNet_FreePacket, libSDL2_net), Cvoid, (Ptr{UDPpacket},), packet)
+end
+
+function SDLNet_AllocPacketV(howmany, size)
+    ccall((:SDLNet_AllocPacketV, libSDL2_net), Ptr{Ptr{UDPpacket}}, (Cint, Cint), howmany, size)
+end
+
+function SDLNet_FreePacketV(packetV)
+    ccall((:SDLNet_FreePacketV, libSDL2_net), Cvoid, (Ptr{Ptr{UDPpacket}},), packetV)
+end
+
+function SDLNet_UDP_Open(port)
+    ccall((:SDLNet_UDP_Open, libSDL2_net), UDPsocket, (Uint16,), port)
+end
+
+function SDLNet_UDP_SetPacketLoss(sock, percent)
+    ccall((:SDLNet_UDP_SetPacketLoss, libSDL2_net), Cvoid, (UDPsocket, Cint), sock, percent)
+end
+
+function SDLNet_UDP_Bind(sock, channel, address)
+    ccall((:SDLNet_UDP_Bind, libSDL2_net), Cint, (UDPsocket, Cint, Ptr{IPaddress}), sock, channel, address)
+end
+
+function SDLNet_UDP_Unbind(sock, channel)
+    ccall((:SDLNet_UDP_Unbind, libSDL2_net), Cvoid, (UDPsocket, Cint), sock, channel)
+end
+
+function SDLNet_UDP_GetPeerAddress(sock, channel)
+    ccall((:SDLNet_UDP_GetPeerAddress, libSDL2_net), Ptr{IPaddress}, (UDPsocket, Cint), sock, channel)
+end
+
+function SDLNet_UDP_SendV(sock, packets, npackets)
+    ccall((:SDLNet_UDP_SendV, libSDL2_net), Cint, (UDPsocket, Ptr{Ptr{UDPpacket}}, Cint), sock, packets, npackets)
+end
+
+function SDLNet_UDP_Send(sock, channel, packet)
+    ccall((:SDLNet_UDP_Send, libSDL2_net), Cint, (UDPsocket, Cint, Ptr{UDPpacket}), sock, channel, packet)
+end
+
+function SDLNet_UDP_RecvV(sock, packets)
+    ccall((:SDLNet_UDP_RecvV, libSDL2_net), Cint, (UDPsocket, Ptr{Ptr{UDPpacket}}), sock, packets)
+end
+
+function SDLNet_UDP_Recv(sock, packet)
+    ccall((:SDLNet_UDP_Recv, libSDL2_net), Cint, (UDPsocket, Ptr{UDPpacket}), sock, packet)
+end
+
+function SDLNet_UDP_Close(sock)
+    ccall((:SDLNet_UDP_Close, libSDL2_net), Cvoid, (UDPsocket,), sock)
+end
+
+mutable struct _SDLNet_SocketSet end
+
+const SDLNet_SocketSet = Ptr{_SDLNet_SocketSet}
+
+function SDLNet_AllocSocketSet(maxsockets)
+    ccall((:SDLNet_AllocSocketSet, libSDL2_net), SDLNet_SocketSet, (Cint,), maxsockets)
+end
+
+function SDLNet_AddSocket(set, sock)
+    ccall((:SDLNet_AddSocket, libSDL2_net), Cint, (SDLNet_SocketSet, SDLNet_GenericSocket), set, sock)
+end
+
+function SDLNet_TCP_AddSocket(set, sock)
+    ccall((:SDLNet_TCP_AddSocket, libSDL2_net), Cint, (SDLNet_SocketSet, TCPsocket), set, sock)
+end
+
+function SDLNet_UDP_AddSocket(set, sock)
+    ccall((:SDLNet_UDP_AddSocket, libSDL2_net), Cint, (SDLNet_SocketSet, UDPsocket), set, sock)
+end
+
+function SDLNet_DelSocket(set, sock)
+    ccall((:SDLNet_DelSocket, libSDL2_net), Cint, (SDLNet_SocketSet, SDLNet_GenericSocket), set, sock)
+end
+
+function SDLNet_TCP_DelSocket(set, sock)
+    ccall((:SDLNet_TCP_DelSocket, libSDL2_net), Cint, (SDLNet_SocketSet, TCPsocket), set, sock)
+end
+
+function SDLNet_UDP_DelSocket(set, sock)
+    ccall((:SDLNet_UDP_DelSocket, libSDL2_net), Cint, (SDLNet_SocketSet, UDPsocket), set, sock)
+end
+
+function SDLNet_CheckSockets(set, timeout)
+    ccall((:SDLNet_CheckSockets, libSDL2_net), Cint, (SDLNet_SocketSet, Uint32), set, timeout)
+end
+
+function SDLNet_FreeSocketSet(set)
+    ccall((:SDLNet_FreeSocketSet, libSDL2_net), Cvoid, (SDLNet_SocketSet,), set)
+end
+
+function SDLNet_GetError()
+    ccall((:SDLNet_GetError, libSDL2_net), Ptr{Cchar}, ())
+end
+
+struct __JL_Ctag_649
     autoclose::SDL_bool
     fp::Ptr{Libc.FILE}
 end
-function Base.getproperty(x::Ptr{__JL_Ctag_560}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_649}, f::Symbol)
     f === :autoclose && return Ptr{SDL_bool}(x + 0)
     f === :fp && return Ptr{Ptr{Libc.FILE}}(x + 8)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_560, f::Symbol)
-    r = Ref{__JL_Ctag_560}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_560}, r)
+function Base.getproperty(x::__JL_Ctag_649, f::Symbol)
+    r = Ref{__JL_Ctag_649}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_649}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_560}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_649}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
 
-struct __JL_Ctag_561
+struct __JL_Ctag_650
     base::Ptr{Uint8}
     here::Ptr{Uint8}
     stop::Ptr{Uint8}
 end
-function Base.getproperty(x::Ptr{__JL_Ctag_561}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_650}, f::Symbol)
     f === :base && return Ptr{Ptr{Uint8}}(x + 0)
     f === :here && return Ptr{Ptr{Uint8}}(x + 8)
     f === :stop && return Ptr{Ptr{Uint8}}(x + 16)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_561, f::Symbol)
-    r = Ref{__JL_Ctag_561}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_561}, r)
+function Base.getproperty(x::__JL_Ctag_650, f::Symbol)
+    r = Ref{__JL_Ctag_650}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_650}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_561}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_650}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
 
-struct __JL_Ctag_562
+struct __JL_Ctag_651
     data1::Ptr{Cvoid}
     data2::Ptr{Cvoid}
 end
-function Base.getproperty(x::Ptr{__JL_Ctag_562}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_651}, f::Symbol)
     f === :data1 && return Ptr{Ptr{Cvoid}}(x + 0)
     f === :data2 && return Ptr{Ptr{Cvoid}}(x + 8)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_562, f::Symbol)
-    r = Ref{__JL_Ctag_562}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_562}, r)
+function Base.getproperty(x::__JL_Ctag_651, f::Symbol)
+    r = Ref{__JL_Ctag_651}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_651}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_562}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_651}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
 
-struct __JL_Ctag_564
+struct __JL_Ctag_653
     hat::Cint
     hat_mask::Cint
 end
-function Base.getproperty(x::Ptr{__JL_Ctag_564}, f::Symbol)
+function Base.getproperty(x::Ptr{__JL_Ctag_653}, f::Symbol)
     f === :hat && return Ptr{Cint}(x + 0)
     f === :hat_mask && return Ptr{Cint}(x + 4)
     return getfield(x, f)
 end
 
-function Base.getproperty(x::__JL_Ctag_564, f::Symbol)
-    r = Ref{__JL_Ctag_564}(x)
-    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_564}, r)
+function Base.getproperty(x::__JL_Ctag_653, f::Symbol)
+    r = Ref{__JL_Ctag_653}(x)
+    ptr = Base.unsafe_convert(Ptr{__JL_Ctag_653}, r)
     fptr = getproperty(ptr, f)
     GC.@preserve r unsafe_load(fptr)
 end
 
-function Base.setproperty!(x::Ptr{__JL_Ctag_564}, f::Symbol, v)
+function Base.setproperty!(x::Ptr{__JL_Ctag_653}, f::Symbol, v)
     unsafe_store!(getproperty(x, f), v)
 end
 
@@ -7789,7 +7996,7 @@ const SDL2_GFXPRIMITIVES_MAJOR = 1
 
 const SDL2_GFXPRIMITIVES_MINOR = 0
 
-const SDL2_GFXPRIMITIVES_MICRO = 3
+const SDL2_GFXPRIMITIVES_MICRO = 4
 
 # Skipping MacroDefinition: SDL2_GFXPRIMITIVES_SCOPE extern
 
@@ -7801,8 +8008,30 @@ const SMOOTHING_ON = 1
 
 # Skipping MacroDefinition: SDL2_ROTOZOOM_SCOPE extern
 
+const SDL_NET_MAJOR_VERSION = 2
+
+const SDL_NET_MINOR_VERSION = 2
+
+const SDL_NET_PATCHLEVEL = 0
+
+const SDL_NET_COMPILEDVERSION = SDL_VERSIONNUM(SDL_NET_MAJOR_VERSION, SDL_NET_MINOR_VERSION, SDL_NET_PATCHLEVEL)
+
+const INADDR_ANY = 0x00000000
+
+const INADDR_NONE = 0xffffffff
+
+const INADDR_LOOPBACK = 0x7f000001
+
+const INADDR_BROADCAST = 0xffffffff
+
+const SDLNET_MAX_UDPCHANNELS = 32
+
+const SDLNET_MAX_UDPADDRESSES = 4
+
+const SDL_DATA_ALIGNED = 0
+
 # exports
-const PREFIXES = ["TTF_", "IMG_", "Mix_", "SDL_", "MIX_", "RW_", "AUDIO_", "KMOD_", "HAVE_"]
+const PREFIXES = ["TTF_", "IMG_", "Mix_", "SDL_", "MIX_", "RW_", "AUDIO_", "KMOD_", "HAVE_", "SDLNet_"]
 for name in names(@__MODULE__; all=true), prefix in PREFIXES
     if startswith(string(name), prefix)
         @eval export $name
