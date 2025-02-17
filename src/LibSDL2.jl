@@ -20,8 +20,6 @@ export SDL2_net_jll
 
 using CEnum
 
-println("SDL2_jll version: ")
-
 const SDL_MIN_SINT8 = reinterpret(Int8, ~0x7F)
 const SDL_MIN_SINT16 = reinterpret(Int16, ~0x7FFF)
 const SDL_MIN_SINT32 = reinterpret(Int32, ~0x7FFFFFFF)
