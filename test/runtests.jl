@@ -8,4 +8,5 @@ include("lib/SDL_image.jl")
 include("lib/SDL_ttf.jl")
 include("lib/SDL_mixer.jl")
 include("lib/SDL_gfx.jl")
+include("lib/SDL_net.jl")
 
