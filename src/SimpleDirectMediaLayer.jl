@@ -7,8 +7,6 @@ module SimpleDirectMediaLayer
     include("LibSDL2.jl")
     using .LibSDL2
 
-    using ColorTypes
-
     import Base.unsafe_convert
     export  TTF_Init, TTF_OpenFont, TTF_RenderText_Blended, TTF_SizeText
 
